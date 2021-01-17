@@ -1,0 +1,751 @@
+{
+  "wormholes": [
+    {
+      "name": "H121",
+      "from": "C1",
+      "to": "C1",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "Z647",
+      "from": "C2",
+      "to": "C1",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "V301",
+      "from": "C3",
+      "to": "C1",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "P060",
+      "from": "C4",
+      "to": "C1",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "Y790",
+      "from": "C5",
+      "to": "C1",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "Q317",
+      "from": "C6",
+      "to": "C1",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "Z971",
+      "from": "H/L/N",
+      "to": "C1",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 100,
+      "massRegeneration": 0
+    },
+    {
+      "name": "C125",
+      "from": "C1",
+      "to": "C2",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "D382",
+      "from": "C2",
+      "to": "C2",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "I182",
+      "from": "C3",
+      "to": "C2",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "N766",
+      "from": "C4",
+      "to": "C2",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "D364",
+      "from": "C5",
+      "to": "C2",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "G024",
+      "from": "C6",
+      "to": "C2",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "R943",
+      "from": "H/L/N",
+      "to": "C2",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 750,
+      "massRegeneration": 0
+    },
+    {
+      "name": "O833",
+      "from": "C1",
+      "to": "C3",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "O477",
+      "from": "C2",
+      "to": "C3",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "N968",
+      "from": "C3",
+      "to": "C3",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "C247",
+      "from": "C4",
+      "to": "C3",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "M267",
+      "from": "C5",
+      "to": "C3",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "L477",
+      "from": "C6",
+      "to": "C3",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "X702",
+      "from": "H/L/N",
+      "to": "C3",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "M609",
+      "from": "C1",
+      "to": "C4",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "Y683",
+      "from": "C2",
+      "to": "C4",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "T405",
+      "from": "C3",
+      "to": "C4",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "X877",
+      "from": "C4",
+      "to": "C4",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "E175",
+      "from": "C5",
+      "to": "C4",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "Z457",
+      "from": "C6",
+      "to": "C4",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "O128",
+      "from": "H/L/N",
+      "to": "C4",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "L614",
+      "from": "C1",
+      "to": "C5",
+      "lifetime": 24,
+      "maxJumpMass": 20,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "N062",
+      "from": "C2",
+      "to": "C5",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "N770",
+      "from": "C3",
+      "to": "C5",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "H900",
+      "from": "C4",
+      "to": "C5",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "H296",
+      "from": "C5",
+      "to": "C5",
+      "lifetime": 24,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "V911",
+      "from": "C6",
+      "to": "C5",
+      "lifetime": 24,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "M555",
+      "from": "H",
+      "to": "C5",
+      "lifetime": 24,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "N432",
+      "from": "L/N",
+      "to": "C5",
+      "lifetime": 24,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "S804",
+      "from": "C1",
+      "to": "C6",
+      "lifetime": 24,
+      "maxJumpMass": 20,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "R474",
+      "from": "C2",
+      "to": "C6",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "A982",
+      "from": "C3",
+      "to": "C6",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "U574",
+      "from": "C4",
+      "to": "C6",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "V753",
+      "from": "C5",
+      "to": "C6",
+      "lifetime": 24,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "W237",
+      "from": "C6",
+      "to": "C6",
+      "lifetime": 24,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "B041",
+      "from": "H",
+      "to": "C6",
+      "lifetime": 48,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "U319",
+      "from": "L/N",
+      "to": "C6",
+      "lifetime": 48,
+      "maxJumpMass": 1800,
+      "totalStableMass": 3000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "N110",
+      "from": "C1",
+      "to": "H",
+      "lifetime": 24,
+      "maxJumpMass": 20,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "B247",
+      "from": "C2",
+      "to": "H",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "D845",
+      "from": "C3",
+      "to": "H",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 5000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "S047",
+      "from": "C4",
+      "to": "H",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "D792",
+      "from": "C5",
+      "to": "H",
+      "lifetime": 24,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "B520",
+      "from": "C6",
+      "to": "H",
+      "lifetime": 24,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "A641",
+      "from": "H",
+      "to": "H",
+      "lifetime": 16,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "B449",
+      "from": "L/N",
+      "to": "H",
+      "lifetime": 16,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "Q063",
+      "from": "Thera",
+      "to": "H",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "J244",
+      "from": "C1",
+      "to": "L",
+      "lifetime": 24,
+      "maxJumpMass": 20,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "A239",
+      "from": "C2",
+      "to": "L",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "U210",
+      "from": "C3",
+      "to": "L",
+      "lifetime": 24,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "N290",
+      "from": "C4",
+      "to": "L",
+      "lifetime": 24,
+      "maxJumpMass": 1800,
+      "totalStableMass": 3000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "C140",
+      "from": "C5",
+      "to": "L",
+      "lifetime": 24,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "C391",
+      "from": "C6",
+      "to": "L",
+      "lifetime": 48,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "R051",
+      "from": "H",
+      "to": "L",
+      "lifetime": 16,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "N944",
+      "from": "L/N",
+      "to": "L",
+      "lifetime": 24,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "Z060",
+      "from": "C1",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 1000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "E545",
+      "from": "C2",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "K346",
+      "from": "C3",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "K329",
+      "from": "C4",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 1800,
+      "totalStableMass": 5000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "Z142",
+      "from": "C5",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "C248",
+      "from": "C6",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "V283",
+      "from": "H",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "S199",
+      "from": "L/N",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 1350,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "E587",
+      "from": "Thera",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "F353",
+      "from": "C1",
+      "to": "Thera",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 100,
+      "massRegeneration": 0
+    },
+    {
+      "name": "F135",
+      "from": "C2/C3/C4/C5/C6",
+      "to": "Thera",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 750,
+      "massRegeneration": 0
+    },
+    {
+      "name": "T458",
+      "from": "H",
+      "to": "Thera",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "M164",
+      "from": "L",
+      "to": "Thera",
+      "lifetime": 16,
+      "maxJumpMass": 300,
+      "totalStableMass": 2000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "L031",
+      "from": "N",
+      "to": "Thera",
+      "lifetime": 16,
+      "maxJumpMass": 1000,
+      "totalStableMass": 3000,
+      "massRegeneration": 0
+    },
+    {
+      "name": "A009",
+      "from": "C1",
+      "to": "C13",
+      "lifetime": 16,
+      "maxJumpMass": 20,
+      "totalStableMass": 500,
+      "massRegeneration": 0
+    },
+    {
+      "name": "E004",
+      "from": "?",
+      "to": "C1",
+      "lifetime": 16,
+      "maxJumpMass": 5,
+      "totalStableMass": 1000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "L005",
+      "from": "?",
+      "to": "C2",
+      "lifetime": 16,
+      "maxJumpMass": 5,
+      "totalStableMass": 1000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "Z006",
+      "from": "?",
+      "to": "C3",
+      "lifetime": 16,
+      "maxJumpMass": 5,
+      "totalStableMass": 1000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "M001",
+      "from": "?",
+      "to": "C4",
+      "lifetime": 16,
+      "maxJumpMass": 5,
+      "totalStableMass": 1000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "C008",
+      "from": "?",
+      "to": "C5",
+      "lifetime": 16,
+      "maxJumpMass": 5,
+      "totalStableMass": 1000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "G008",
+      "from": "?",
+      "to": "C6",
+      "lifetime": 16,
+      "maxJumpMass": 5,
+      "totalStableMass": 1000,
+      "massRegeneration": 500
+    },
+    {
+      "name": "Q003",
+      "from": "?",
+      "to": "N",
+      "lifetime": 16,
+      "maxJumpMass": 5,
+      "totalStableMass": 1000,
+      "massRegeneration": 500
+    }
+  ]
+}
