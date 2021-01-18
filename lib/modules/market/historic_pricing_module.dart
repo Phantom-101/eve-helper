@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MarketHistoricVolumeModule extends Module {
-  MarketHistoricVolumeModule() {
+class HistoricPricingModule extends Module {
+  HistoricPricingModule() {
     inputs.add(ModuleInputSlot<List<MarketHistory>>(name: 'history', value: <MarketHistory>[], module: this));
     setListenable();
   }
@@ -21,8 +21,8 @@ class MarketHistoricVolumeModule extends Module {
         height: 40,
         child: Image.asset('assets/Icons/UI/WindowIcons/market.png', color: Colors.black, fit: BoxFit.fill),
       ),
-      title: Text('Market Historic Volume'),
-      subtitle: Text('The historic volume of an item in a certain region.'),
+      title: Text('Historic Pricing'),
+      subtitle: Text('The historic pricing of an item in a certain region.'),
       onTap: onAdd,
     );
   }
@@ -38,22 +38,36 @@ class MarketHistoricVolumeModule extends Module {
       builder: (context, child) {
         List<MarketHistory> history = inputs[0].getValue();
         return CardTile(
-          title: Text('Market Historic Volume'),
+          title: Text('Historic Pricing'),
           subtitle: history.length == 0 ? Text('No Data') : Container(
             child: ZPChart(
               zp: zp,
               child: SfCartesianChart(
                 primaryXAxis: DateTimeAxis(),
                 series: <ChartSeries>[
-                  AreaSeries<MarketHistory, DateTime>(
-                    name: 'Volume',
-                    color: Colors.blue[100],
-                    borderColor: Colors.blue,
-                    borderWidth: 1,
+                  FastLineSeries<MarketHistory, DateTime>(
+                    name: 'Highest',
+                    color: Colors.red,
+                    width: 1,
                     dataSource: history,
                     xValueMapper: (e, _) => DateTime.parse(e.date),
-                    yValueMapper: (e, _) => e.volume,
-                    yAxisName: 'Volume',
+                    yValueMapper: (e, _) => e.highest,
+                  ),
+                  FastLineSeries<MarketHistory, DateTime>(
+                    name: 'Average',
+                    color: Colors.blue,
+                    width: 1,
+                    dataSource: history,
+                    xValueMapper: (e, _) => DateTime.parse(e.date),
+                    yValueMapper: (e, _) => e.average,
+                  ),
+                  FastLineSeries<MarketHistory, DateTime>(
+                    name: 'Lowest',
+                    color: Colors.green,
+                    width: 1,
+                    dataSource: history,
+                    xValueMapper: (e, _) => DateTime.parse(e.date),
+                    yValueMapper: (e, _) => e.lowest,
                   ),
                 ],
                 legend: Legend(
@@ -77,7 +91,7 @@ class MarketHistoricVolumeModule extends Module {
   }
 
   @override
-  StaggeredTile getStaggeredTile() {
-    return StaggeredTile.fit(2);
+  StaggeredTile getStaggeredTile(int size) {
+    return StaggeredTile.fit(size);
   }
 }

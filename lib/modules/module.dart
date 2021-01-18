@@ -28,7 +28,7 @@ class Module {
     );
   }
 
-  StaggeredTile getStaggeredTile() {
+  StaggeredTile getStaggeredTile(int size) {
     return StaggeredTile.extent(1, 1);
   }
 

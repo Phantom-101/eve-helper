@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:eve_helper/data_structures/esi/market/market_history.dart';
 import 'package:eve_helper/modules/module.dart';
 import 'package:eve_helper/modules/module_input_slot.dart';
@@ -8,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MarketHistoricAccumulationDistributionModule extends Module {
-  MarketHistoricAccumulationDistributionModule() {
+class BollingerBandModule extends Module {
+  BollingerBandModule() {
     inputs.add(ModuleInputSlot<List<MarketHistory>>(name: 'history', value: <MarketHistory>[], module: this));
     setListenable();
   }
@@ -22,8 +21,8 @@ class MarketHistoricAccumulationDistributionModule extends Module {
         height: 40,
         child: Image.asset('assets/Icons/UI/WindowIcons/market.png', color: Colors.black, fit: BoxFit.fill),
       ),
-      title: Text('Market Historic Accumulation Distribution'),
-      subtitle: Text('The historic accumulation distribution of an item in a certain region.'),
+      title: Text('Bollinger Band'),
+      subtitle: Text('The historic bollinger band of an item in a certain region.'),
       onTap: onAdd,
     );
   }
@@ -39,18 +38,12 @@ class MarketHistoricAccumulationDistributionModule extends Module {
       builder: (context, child) {
         List<MarketHistory> history = inputs[0].getValue();
         return CardTile(
-          title: Text('Market Historic Accumulation Distribution'),
+          title: Text('Bollinger Band'),
           subtitle: history.length == 0 ? Text('No Data') : Container(
             child: ZPChart(
               zp: zp,
               child: SfCartesianChart(
                 primaryXAxis: DateTimeAxis(),
-                axes: [
-                  NumericAxis(
-                    name: 'AD',
-                    opposedPosition: true,
-                  ),
-                ],
                 series: <ChartSeries>[
                   HiloOpenCloseSeries<MarketHistory, DateTime>(
                     name: 'OHLC',
@@ -58,18 +51,22 @@ class MarketHistoricAccumulationDistributionModule extends Module {
                     dataSource: history.getRange(1, history.length).toList(),
                     xValueMapper: (e, _) => DateTime.parse(e.date),
                     openValueMapper: (e, _) => history[history.indexOf(e) - 1].average,
-                    highValueMapper: (e, _) => max(e.highest, max(e.average, history[history.indexOf(e) - 1].average)),
-                    lowValueMapper: (e, _) => min(e.lowest, min(e.average, history[history.indexOf(e) - 1].average)),
+                    highValueMapper: (e, _) => e.highest,
+                    lowValueMapper: (e, _) => e.lowest,
                     closeValueMapper: (e, _) => e.average,
                     volumeValueMapper: (e, _) => e.volume,
                   ),
                 ],
                 indicators: <TechnicalIndicators>[
-                  AccumulationDistributionIndicator<MarketHistory, DateTime>(
-                    name: 'AD',
+                  BollingerBandIndicator<MarketHistory, DateTime>(
+                    name: 'Bollinger',
                     seriesName: 'OHLC',
+                    animationDuration: 0,
+                    upperLineWidth: 1,
                     signalLineWidth: 1,
-                    yAxisName: 'AD',
+                    lowerLineWidth: 1,
+                    period: 14,
+                    standardDeviation: 1,
                   ),
                 ],
                 legend: Legend(
@@ -93,7 +90,7 @@ class MarketHistoricAccumulationDistributionModule extends Module {
   }
 
   @override
-  StaggeredTile getStaggeredTile() {
-    return StaggeredTile.fit(2);
+  StaggeredTile getStaggeredTile(int size) {
+    return StaggeredTile.fit(size);
   }
 }

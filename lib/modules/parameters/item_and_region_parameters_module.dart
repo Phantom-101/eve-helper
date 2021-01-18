@@ -64,7 +64,7 @@ class ItemAndRegionParametersModule extends Module {
   }
 
   @override
-  StaggeredTile getStaggeredTile() {
-    return StaggeredTile.fit(1);
+  StaggeredTile getStaggeredTile(int size) {
+    return StaggeredTile.fit(size);
   }
 }

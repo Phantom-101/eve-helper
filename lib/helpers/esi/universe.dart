@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:eve_helper/data_structures.dart';
+import 'package:eve_helper/data_structures/esi/locations/station_information.dart';
+import 'package:eve_helper/data_structures/esi/locations/structure_information.dart';
 import 'package:http/http.dart' as http;
 
 class Universe {
@@ -28,6 +30,26 @@ class Universe {
 
     if (response.statusCode == 200) {
       return SolarSystemInformation.fromJson(json.decode(response.body));
+    } else {
+      throw Exception(response.statusCode);
+    }
+  }
+
+  static Future<StationInformation> getStationInformation(int id) async {
+    final response = await http.get('https://esi.evetech.net/latest/universe/stations/$id/?datasource=tranquility');
+
+    if (response.statusCode == 200) {
+      return StationInformation.fromJson(json.decode(response.body));
+    } else {
+      throw Exception(response.statusCode);
+    }
+  }
+
+  static Future<StructureInformation> getStructureInformation(int id) async {
+    final response = await http.get('https://esi.evetech.net/latest/universe/structures/$id/?datasource=tranquility');
+
+    if (response.statusCode == 200) {
+      return StructureInformation.fromJson(json.decode(response.body));
     } else {
       throw Exception(response.statusCode);
     }

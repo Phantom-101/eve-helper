@@ -21,13 +21,27 @@ class ToolSelectionView extends StatelessWidget {
       body: StaggeredGridView.count(
         crossAxisCount: 4,
         children: [
-          CardTile(
-            title: Text('Eve Helper'),
-            subtitle: Text('A handy tool for all of your Eve Online needs!\nThis small but powerful app contains tools that will help you streamline every aspect of your gameplay!\nBelow is the list of categories for which we have tools for (or will have, as some of them are still being worked on).'),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: CardTile(
+                  title: Text('Eve Helper'),
+                  subtitle: Text('A handy tool for all of your Eve Online needs!\nThis small but powerful app contains tools that will help you streamline every aspect of your gameplay!\nBelow is the list of categories for which we have tools for (or will have, as some of them are still being worked on).'),
+                ),
+              ),
+              Expanded(
+                child: CardTile(
+                  title: Text('Important'),
+                  subtitle: Text('This material is used with limited permission of CCP Games. No official affiliation or endorsement by CCP Games is stated or implied.\nEVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide. All other trademarks are the property of their respective owners. EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf.\nCCP is in no way responsible for the content on or functioning of this application, nor can it be liable for any damage arising from the use of this application.'),
+                ),
+              ),
+            ],
           ),
-          CardTile(
-            title: Text('Important'),
-            subtitle: Text('This material is used with limited permission of CCP Games. No official affiliation or endorsement by CCP Games is stated or implied.\nEVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide. All other trademarks are the property of their respective owners. EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf.\nCCP is in no way responsible for the content on or functioning of this application, nor can it be liable for any damage arising from the use of this application.'),
+          Divider(
+            color: Colors.blueGrey[100],
+            height: 32,
+            thickness: 1,
           ),
           CardTile(
             leading: SizedBox(
@@ -91,8 +105,8 @@ class ToolSelectionView extends StatelessWidget {
           ),
         ],
         staggeredTiles: [
-          StaggeredTile.fit(2),
-          StaggeredTile.fit(2),
+          StaggeredTile.fit(4),
+          StaggeredTile.fit(4),
           StaggeredTile.fit(1),
           StaggeredTile.fit(1),
           StaggeredTile.fit(1),

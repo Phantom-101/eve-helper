@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:eve_helper/data_structures/esi/market/market_history.dart';
 import 'package:eve_helper/modules/module.dart';
 import 'package:eve_helper/modules/module_input_slot.dart';
@@ -8,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MarketHistoricAverageTrueRangeModule extends Module {
-  MarketHistoricAverageTrueRangeModule() {
+class AccumulationDistributionModule extends Module {
+  AccumulationDistributionModule() {
     inputs.add(ModuleInputSlot<List<MarketHistory>>(name: 'history', value: <MarketHistory>[], module: this));
     setListenable();
   }
@@ -22,8 +21,8 @@ class MarketHistoricAverageTrueRangeModule extends Module {
         height: 40,
         child: Image.asset('assets/Icons/UI/WindowIcons/market.png', color: Colors.black, fit: BoxFit.fill),
       ),
-      title: Text('Market Historic Average True Range'),
-      subtitle: Text('The historic average true range of an item in a certain region.'),
+      title: Text('Accumulation Distribution'),
+      subtitle: Text('The historic accumulation distribution of an item in a certain region.'),
       onTap: onAdd,
     );
   }
@@ -39,7 +38,7 @@ class MarketHistoricAverageTrueRangeModule extends Module {
       builder: (context, child) {
         List<MarketHistory> history = inputs[0].getValue();
         return CardTile(
-          title: Text('Market Historic Average True Range'),
+          title: Text('Accumulation Distribution'),
           subtitle: history.length == 0 ? Text('No Data') : Container(
             child: ZPChart(
               zp: zp,
@@ -47,7 +46,7 @@ class MarketHistoricAverageTrueRangeModule extends Module {
                 primaryXAxis: DateTimeAxis(),
                 axes: [
                   NumericAxis(
-                    name: 'ATR',
+                    name: 'AD',
                     opposedPosition: true,
                   ),
                 ],
@@ -58,18 +57,18 @@ class MarketHistoricAverageTrueRangeModule extends Module {
                     dataSource: history.getRange(1, history.length).toList(),
                     xValueMapper: (e, _) => DateTime.parse(e.date),
                     openValueMapper: (e, _) => history[history.indexOf(e) - 1].average,
-                    highValueMapper: (e, _) => max(e.highest, max(e.average, history[history.indexOf(e) - 1].average)),
-                    lowValueMapper: (e, _) => min(e.lowest, min(e.average, history[history.indexOf(e) - 1].average)),
+                    highValueMapper: (e, _) => e.highest,
+                    lowValueMapper: (e, _) => e.lowest,
                     closeValueMapper: (e, _) => e.average,
                     volumeValueMapper: (e, _) => e.volume,
                   ),
                 ],
                 indicators: <TechnicalIndicators>[
-                  AtrIndicator<MarketHistory, DateTime>(
-                    name: 'ATR',
+                  AccumulationDistributionIndicator<MarketHistory, DateTime>(
+                    name: 'AD',
                     seriesName: 'OHLC',
                     signalLineWidth: 1,
-                    yAxisName: 'ATR',
+                    yAxisName: 'AD',
                   ),
                 ],
                 legend: Legend(
@@ -93,7 +92,7 @@ class MarketHistoricAverageTrueRangeModule extends Module {
   }
 
   @override
-  StaggeredTile getStaggeredTile() {
-    return StaggeredTile.fit(2);
+  StaggeredTile getStaggeredTile(int size) {
+    return StaggeredTile.fit(size);
   }
 }

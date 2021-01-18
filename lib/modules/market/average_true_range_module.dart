@@ -1,4 +1,4 @@
-import 'package:eve_helper/data_structures/esi/market/market_order.dart';
+import 'package:eve_helper/data_structures/esi/market/market_history.dart';
 import 'package:eve_helper/modules/module.dart';
 import 'package:eve_helper/modules/module_input_slot.dart';
 import 'package:eve_helper/widgets/zp_chart.dart';
@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MarketDepthModule extends Module {
-  MarketDepthModule() {
-    inputs.add(ModuleInputSlot<List<MarketOrder>>(name: 'orders', value: <MarketOrder>[], module: this));
+class AverageTrueRangeModule extends Module {
+  AverageTrueRangeModule() {
+    inputs.add(ModuleInputSlot<List<MarketHistory>>(name: 'history', value: <MarketHistory>[], module: this));
     setListenable();
   }
 
@@ -21,8 +21,8 @@ class MarketDepthModule extends Module {
         height: 40,
         child: Image.asset('assets/Icons/UI/WindowIcons/market.png', color: Colors.black, fit: BoxFit.fill),
       ),
-      title: Text('Market Depth'),
-      subtitle: Text('The depth of an item in a region\'s market.'),
+      title: Text('Average True Range'),
+      subtitle: Text('The historic average true range of an item in a certain region.'),
       onTap: onAdd,
     );
   }
@@ -36,32 +36,39 @@ class MarketDepthModule extends Module {
     return AnimatedBuilder(
       animation: getListenable(),
       builder: (context, child) {
-        List<MarketOrder> orders = inputs[0].getValue();
+        List<MarketHistory> history = inputs[0].getValue();
         return CardTile(
-          title: Text('Market Depth'),
-          subtitle: orders.length == 0 ? Text('No Data') : Container(
+          title: Text('Average True Range'),
+          subtitle: history.length == 0 ? Text('No Data') : Container(
             child: ZPChart(
               zp: zp,
               child: SfCartesianChart(
-                primaryXAxis: NumericAxis(),
-                series: <ChartSeries>[
-                  AreaSeries<MarketOrder, num>(
-                    name: 'Sells',
-                    color: Colors.red[100],
-                    borderColor: Colors.red,
-                    borderWidth: 1,
-                    dataSource: orders.where((e) => !e.buyOrder).toList()..sort((a, b) => a.price.compareTo(b.price)),
-                    xValueMapper: (e, _) => e.price,
-                    yValueMapper: (e, _) => e.volumeRemain,
+                primaryXAxis: DateTimeAxis(),
+                axes: [
+                  NumericAxis(
+                    name: 'ATR',
+                    opposedPosition: true,
                   ),
-                  AreaSeries<MarketOrder, num>(
-                    name: 'Buys',
-                    color: Colors.blue[100],
-                    borderColor: Colors.blue,
+                ],
+                series: <ChartSeries>[
+                  HiloOpenCloseSeries<MarketHistory, DateTime>(
+                    name: 'OHLC',
                     borderWidth: 1,
-                    dataSource: orders.where((e) => e.buyOrder).toList()..sort((a, b) => a.price.compareTo(b.price)),
-                    xValueMapper: (e, _) => e.price,
-                    yValueMapper: (e, _) => e.volumeRemain,
+                    dataSource: history.getRange(1, history.length).toList(),
+                    xValueMapper: (e, _) => DateTime.parse(e.date),
+                    openValueMapper: (e, _) => history[history.indexOf(e) - 1].average,
+                    highValueMapper: (e, _) => e.highest,
+                    lowValueMapper: (e, _) => e.lowest,
+                    closeValueMapper: (e, _) => e.average,
+                    volumeValueMapper: (e, _) => e.volume,
+                  ),
+                ],
+                indicators: <TechnicalIndicators>[
+                  AtrIndicator<MarketHistory, DateTime>(
+                    name: 'ATR',
+                    seriesName: 'OHLC',
+                    signalLineWidth: 1,
+                    yAxisName: 'ATR',
                   ),
                 ],
                 legend: Legend(
@@ -85,7 +92,7 @@ class MarketDepthModule extends Module {
   }
 
   @override
-  StaggeredTile getStaggeredTile() {
-    return StaggeredTile.fit(2);
+  StaggeredTile getStaggeredTile(int size) {
+    return StaggeredTile.fit(size);
   }
 }

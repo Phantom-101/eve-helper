@@ -1,4 +1,4 @@
-import 'package:eve_helper/data_structures/esi/market/market_history.dart';
+import 'package:eve_helper/data_structures/esi/market/market_order.dart';
 import 'package:eve_helper/modules/module.dart';
 import 'package:eve_helper/modules/module_input_slot.dart';
 import 'package:eve_helper/widgets/zp_chart.dart';
@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MarketHistoricPricingModule extends Module {
-  MarketHistoricPricingModule() {
-    inputs.add(ModuleInputSlot<List<MarketHistory>>(name: 'history', value: <MarketHistory>[], module: this));
+class DepthModule extends Module {
+  DepthModule() {
+    inputs.add(ModuleInputSlot<List<MarketOrder>>(name: 'orders', value: <MarketOrder>[], module: this));
     setListenable();
   }
 
@@ -21,8 +21,8 @@ class MarketHistoricPricingModule extends Module {
         height: 40,
         child: Image.asset('assets/Icons/UI/WindowIcons/market.png', color: Colors.black, fit: BoxFit.fill),
       ),
-      title: Text('Market Historic Pricing'),
-      subtitle: Text('The historic pricing of an item in a certain region.'),
+      title: Text('Depth'),
+      subtitle: Text('The depth of an item in a region\'s market.'),
       onTap: onAdd,
     );
   }
@@ -36,38 +36,32 @@ class MarketHistoricPricingModule extends Module {
     return AnimatedBuilder(
       animation: getListenable(),
       builder: (context, child) {
-        List<MarketHistory> history = inputs[0].getValue();
+        List<MarketOrder> orders = inputs[0].getValue();
         return CardTile(
-          title: Text('Market Historic Pricing'),
-          subtitle: history.length == 0 ? Text('No Data') : Container(
+          title: Text('Depth'),
+          subtitle: orders.length == 0 ? Text('No Data') : Container(
             child: ZPChart(
               zp: zp,
               child: SfCartesianChart(
-                primaryXAxis: DateTimeAxis(),
+                primaryXAxis: NumericAxis(),
                 series: <ChartSeries>[
-                  FastLineSeries<MarketHistory, DateTime>(
-                    name: 'Highest',
-                    color: Colors.red,
-                    width: 1,
-                    dataSource: history,
-                    xValueMapper: (e, _) => DateTime.parse(e.date),
-                    yValueMapper: (e, _) => e.highest,
+                  AreaSeries<MarketOrder, num>(
+                    name: 'Sells',
+                    color: Colors.red[100],
+                    borderColor: Colors.red,
+                    borderWidth: 1,
+                    dataSource: orders.where((e) => !e.buyOrder).toList()..sort((a, b) => a.price.compareTo(b.price)),
+                    xValueMapper: (e, _) => e.price,
+                    yValueMapper: (e, _) => e.volumeRemain,
                   ),
-                  FastLineSeries<MarketHistory, DateTime>(
-                    name: 'Average',
-                    color: Colors.blue,
-                    width: 1,
-                    dataSource: history,
-                    xValueMapper: (e, _) => DateTime.parse(e.date),
-                    yValueMapper: (e, _) => e.average,
-                  ),
-                  FastLineSeries<MarketHistory, DateTime>(
-                    name: 'Lowest',
-                    color: Colors.green,
-                    width: 1,
-                    dataSource: history,
-                    xValueMapper: (e, _) => DateTime.parse(e.date),
-                    yValueMapper: (e, _) => e.lowest,
+                  AreaSeries<MarketOrder, num>(
+                    name: 'Buys',
+                    color: Colors.blue[100],
+                    borderColor: Colors.blue,
+                    borderWidth: 1,
+                    dataSource: orders.where((e) => e.buyOrder).toList()..sort((a, b) => a.price.compareTo(b.price)),
+                    xValueMapper: (e, _) => e.price,
+                    yValueMapper: (e, _) => e.volumeRemain,
                   ),
                 ],
                 legend: Legend(
@@ -91,7 +85,7 @@ class MarketHistoricPricingModule extends Module {
   }
 
   @override
-  StaggeredTile getStaggeredTile() {
-    return StaggeredTile.fit(4);
+  StaggeredTile getStaggeredTile(int size) {
+    return StaggeredTile.fit(size);
   }
 }

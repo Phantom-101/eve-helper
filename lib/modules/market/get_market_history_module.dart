@@ -53,16 +53,17 @@ class GetMarketHistoryModule extends Module {
                 width: 12,
                 child: _msg == 'Loading' ? CircularProgressIndicator(
                   strokeWidth: 4,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
                   backgroundColor: Colors.grey,
                 ) : CircularProgressIndicator(
                   strokeWidth: 4,
                   value: 1,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                  valueColor: AlwaysStoppedAnimation<Color>(_msg == 'Error' ? Colors.red : Colors.green),
                 ),
               ),
             ],
           ),
+          subtitle: Text(_msg),
         );
       },
     );
@@ -102,7 +103,7 @@ class GetMarketHistoryModule extends Module {
   }
 
   @override
-  StaggeredTile getStaggeredTile() {
-    return StaggeredTile.fit(1);
+  StaggeredTile getStaggeredTile(int size) {
+    return StaggeredTile.fit(size);
   }
 }
