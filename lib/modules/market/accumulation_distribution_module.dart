@@ -5,6 +5,7 @@ import 'package:eve_helper/widgets/zp_chart.dart';
 import 'package:eve_helper/widgets/card_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AccumulationDistributionModule extends Module {
@@ -76,10 +77,32 @@ class AccumulationDistributionModule extends Module {
                 ),
                 trackballBehavior: TrackballBehavior(
                   enable: true,
-                  tooltipDisplayMode: TrackballDisplayMode.groupAllPoints,
-                  tooltipSettings: InteractiveTooltip(
-                    color: Colors.blueGrey[700],
-                    borderColor: Colors.blueGrey[900],
+                  builder: (context, details) {
+                    return Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: ShapeDecoration(
+                        color: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        '${DateFormat('MMMMd').format(details.point.x)} ${details.series.name}: ${details.point.y}',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  },
+                  tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
+                  markerSettings: TrackballMarkerSettings(
+                    markerVisibility: TrackballVisibilityMode.visible,
+                    shape: DataMarkerType.circle,
+                    color: Colors.blue[100],
+                    borderColor: Colors.blue,
+                    width: 4,
+                    height: 4,
+                    borderWidth: 4,
                   ),
                 ),
                 zoomPanBehavior: zp,
