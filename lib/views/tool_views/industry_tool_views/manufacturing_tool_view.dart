@@ -2,11 +2,12 @@ import 'dart:math';
 import 'package:eve_helper/data_structures.dart';
 import 'package:eve_helper/data_structures/esi/industry/solar_system_cost_indices.dart';
 import 'package:eve_helper/data_structures/esi/market/aa_prices.dart';
+import 'package:eve_helper/data_structures/esi/market/market_stats.dart';
 import 'package:eve_helper/helpers.dart';
 import 'package:eve_helper/helpers/esi/industry.dart';
 import 'package:eve_helper/helpers/esi/market.dart';
 import 'package:eve_helper/helpers/esi/search.dart';
-import 'package:eve_helper/helpers/evemarketer/evemarketer.dart';
+import 'package:eve_helper/helpers/local/cache.dart';
 import 'package:eve_helper/widgets/card_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +37,8 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
 
   Future<int> _marketSystemId;
   Future<int> _industrySystemId;
-  Future<List<double>> _prices;
-  Future<double> _productPrice;
+  List<Future<MarketStats>> _prices;
+  Future<MarketStats> _productPrice;
 
   Future<List<AAPrices>> _aaPrices;
   Future<List<SolarSystemCostIndices>> _costIndices;
@@ -280,9 +281,9 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
                           SizedBox(height: 2),
                           FutureBuilder(
                             future: _productPrice,
-                            builder: (BuildContext context, AsyncSnapshot<double> price) {
+                            builder: (context, price) {
                               if (price.hasData) {
-                                return Text('Jita Min Sell Price: ${_formatter.format(price.data)}');
+                                return Text('Jita Min Sell Price: ${_formatter.format(price.data.minSell)}');
                               }
                               return Text('Jita Min Sell Price: Loading');
                             },
@@ -760,11 +761,14 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
       ids.add(material.typeId);
     });
 
-    _marketSystemId = Search.getSolarSystemId(_marketTEC.text);
-    _industrySystemId = Search.getSolarSystemId(_industryTEC.text);
+    _marketSystemId = Cache.getSolarSystemId(_marketTEC.text);
+    _industrySystemId = Cache.getSolarSystemId(_industryTEC.text);
 
-    _prices = EveMarketer.getMinSellPrices(ids, await _marketSystemId);
-    _productPrice = EveMarketer.getMinSellPrice(_blueprintInformationVN.value.details.productTypeId, await _marketSystemId);
+    _prices = List.filled(ids.length, null);
+    for (int i = 0; i < ids.length; i++) {
+      _prices[i] = Cache.getMarketStats(await _marketSystemId, ids[i]);
+    }
+    _productPrice = Cache.getMarketStats(await _marketSystemId, _blueprintInformationVN.value.details.productTypeId);
 
     _dirtyVN.value = false;
   }
@@ -774,13 +778,7 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
   }
 
   Future<double> _getPrice(BlueprintActivityMaterialInformation material, int quantity) async {
-    List<double> prices = await _prices;
-    return prices[_blueprintInformationVN.value.activityMaterials.manufacture.indexOf(material)] * quantity;
-  }
-
-  Future<double> _getRealPrice(BlueprintActivityMaterialInformation material, int quantity) async {
-    List<double> prices = await _prices;
-    return prices[_blueprintInformationVN.value.activityMaterials.manufacture.indexOf(material)] * quantity * (1 + _salesTaxVN.value * 0.01);
+    return (await _prices[_blueprintInformationVN.value.activityMaterials.manufacture.indexOf(material)]).minSell * quantity;
   }
 
   Future<double> _getTotalPrice() async {
@@ -792,29 +790,11 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
     return total;
   }
 
-  Future<double> _getRealTotalPrice() async {
-    double total = 0;
-    for(int i = 0; i < _blueprintInformationVN.value.activityMaterials.manufacture.length; i++) {
-      final material = _blueprintInformationVN.value.activityMaterials.manufacture[i];
-      total += await _getRealPrice(material, _getQuantity(material, _runsVN.value));
-    }
-    return total;
-  }
-
   Future<double> _getPerRunPrice() async {
     double total = 0;
     for(int i = 0; i < _blueprintInformationVN.value.activityMaterials.manufacture.length; i++) {
       final material = _blueprintInformationVN.value.activityMaterials.manufacture[i];
       total += await _getPrice(material, _getQuantity(material, 1));
-    }
-    return total;
-  }
-
-  Future<double> _getPerRunTotalPrice() async {
-    double total = 0;
-    for(int i = 0; i < _blueprintInformationVN.value.activityMaterials.manufacture.length; i++) {
-      final material = _blueprintInformationVN.value.activityMaterials.manufacture[i];
-      total += await _getRealPrice(material, _getQuantity(material, 1));
     }
     return total;
   }
@@ -870,26 +850,26 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
 
   Future<double> _getBrokerFeesIncrease() async {
     final price = await _productPrice;
-    return price * _blueprintInformationVN.value.details.productQuantity * _brokerFeeVN.value * 0.01 * _runsVN.value;
+    return price.minSell * _blueprintInformationVN.value.details.productQuantity * _brokerFeeVN.value * 0.01 * _runsVN.value;
   }
 
   Future<double> _getBrokerFeesIncreasePerRun() async {
     final price = await _productPrice;
-    return price * _blueprintInformationVN.value.details.productQuantity * _brokerFeeVN.value * 0.01;
+    return price.minSell * _blueprintInformationVN.value.details.productQuantity * _brokerFeeVN.value * 0.01;
   }
 
   Future<double> _getSalesTaxIncrease() async {
     final price = await _productPrice;
-    return price * _salesTaxVN.value * 0.01;
+    return price.minSell * _salesTaxVN.value * 0.01 * _runsVN.value;
   }
 
   Future<double> _getSalesTaxIncreasePerRun() async {
     final price = await _productPrice;
-    return price * _salesTaxVN.value * 0.01;
+    return price.minSell * _salesTaxVN.value * 0.01;
   }
   
   Future<double> _getProfitPerRun() async {
-    final productRevenue = await _productPrice * _blueprintInformationVN.value.details.productQuantity;
+    final productRevenue = (await _productPrice).minSell * _blueprintInformationVN.value.details.productQuantity;
     final materialExpenses = await _getPerRunPrice();
     final brokerFeesIncrease = await _getBrokerFeesIncreasePerRun();
     final salesTaxIncrease = await _getSalesTaxIncreasePerRun();

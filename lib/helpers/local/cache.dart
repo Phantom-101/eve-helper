@@ -34,7 +34,7 @@ class Cache {
     return _itemIdToName[id].item2;
   }
 
-  static Future<int> getSystemId (String name) async {
+  static Future<int> getSolarSystemId (String name) async {
     var now = DateTime.now();
     if (!_systemNameToId.containsKey(name) || _systemNameToId[name].item1.difference(now).inMinutes > 60)
       _systemNameToId[name] = Tuple2(now, await Search.getSolarSystemId(name, strict: true));

@@ -51,7 +51,7 @@ class ItemInformationModule extends Module {
             future: Cache.getItemId(inputs[0].getValue()),
             builder: (context, itemId) {
               if (itemId.hasData) return FutureBuilder(
-                future: Cache.getSystemId('Jita'),
+                future: Cache.getSolarSystemId('Jita'),
                 builder: (context, systemId) {
                   if (systemId.hasData) return FutureBuilder(
                     future: Cache.getMarketStats(systemId.data, itemId.data),
