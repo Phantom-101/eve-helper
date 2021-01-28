@@ -5,7 +5,6 @@ import 'package:eve_helper/widgets/zp_chart.dart';
 import 'package:eve_helper/widgets/card_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DepthModule extends Module {
@@ -38,6 +37,17 @@ class DepthModule extends Module {
       animation: getListenable(),
       builder: (context, child) {
         List<MarketOrder> orders = inputs[0].getValue();
+        Map<double, int> sellDepth = {};
+        Map<double, int> buyDepth = {};
+        orders.forEach((e) {
+          if (e.buyOrder) {
+            buyDepth[e.price] = (buyDepth[e.price] ?? 0) + e.volumeRemain;
+            sellDepth[e.price] = sellDepth[e.price] ?? 0;
+          } else {
+            sellDepth[e.price] = (sellDepth[e.price] ?? 0) + e.volumeRemain;
+            buyDepth[e.price] = buyDepth[e.price] ?? 0;
+          }
+        });
         return CardTile(
           title: Text('Depth'),
           subtitle: orders.length == 0 ? Text('No Data') : Container(
@@ -46,23 +56,23 @@ class DepthModule extends Module {
               child: SfCartesianChart(
                 primaryXAxis: NumericAxis(),
                 series: <ChartSeries>[
-                  AreaSeries<MarketOrder, num>(
+                  AreaSeries<double, num>(
                     name: 'Sells',
                     color: Colors.red[100],
                     borderColor: Colors.red,
                     borderWidth: 1,
-                    dataSource: orders.where((e) => !e.buyOrder).toList()..sort((a, b) => a.price.compareTo(b.price)),
-                    xValueMapper: (e, _) => e.price,
-                    yValueMapper: (e, _) => e.volumeRemain,
+                    dataSource: sellDepth.keys.toList()..sort(),
+                    xValueMapper: (e, _) => e,
+                    yValueMapper: (e, _) => sellDepth[e],
                   ),
-                  AreaSeries<MarketOrder, num>(
+                  AreaSeries<double, num>(
                     name: 'Buys',
                     color: Colors.blue[100],
                     borderColor: Colors.blue,
                     borderWidth: 1,
-                    dataSource: orders.where((e) => e.buyOrder).toList()..sort((a, b) => a.price.compareTo(b.price)),
-                    xValueMapper: (e, _) => e.price,
-                    yValueMapper: (e, _) => e.volumeRemain,
+                    dataSource: buyDepth.keys.toList()..sort(),
+                    xValueMapper: (e, _) => e,
+                    yValueMapper: (e, _) => buyDepth[e],
                   ),
                 ],
                 legend: Legend(
@@ -80,7 +90,7 @@ class DepthModule extends Module {
                         ),
                       ),
                       child: Text(
-                        '${DateFormat('MMMMd').format(details.point.x)} ${details.series.name}: ${details.point.y}',
+                        '${details.series.name} at ${details.point.x}: ${details.point.y}',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -88,6 +98,11 @@ class DepthModule extends Module {
                     );
                   },
                   tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
+                  tooltipSettings: InteractiveTooltip(
+                    arrowWidth: 0,
+                    arrowLength: 0,
+                    borderColor: Colors.transparent,
+                  ),
                   markerSettings: TrackballMarkerSettings(
                     markerVisibility: TrackballVisibilityMode.visible,
                     shape: DataMarkerType.circle,

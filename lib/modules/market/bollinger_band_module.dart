@@ -93,6 +93,12 @@ class BollingerBandModule extends Module {
                     );
                   },
                   tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
+                  tooltipSettings: InteractiveTooltip(
+                    arrowWidth: 0,
+                    arrowLength: 0,
+                    borderColor: Colors.transparent,
+                  ),
+                  tooltipAlignment: ChartAlignment.center,
                   markerSettings: TrackballMarkerSettings(
                     markerVisibility: TrackballVisibilityMode.visible,
                     shape: DataMarkerType.circle,

@@ -94,6 +94,11 @@ class HistoricPricingModule extends Module {
                     );
                   },
                   tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
+                  tooltipSettings: InteractiveTooltip(
+                    arrowWidth: 0,
+                    arrowLength: 0,
+                    borderColor: Colors.transparent,
+                  ),
                   markerSettings: TrackballMarkerSettings(
                     markerVisibility: TrackballVisibilityMode.visible,
                     shape: DataMarkerType.circle,
