@@ -4,14 +4,15 @@ import 'package:eve_helper/data_structures/esi/industry/solar_system_cost_indice
 import 'package:eve_helper/data_structures/esi/market/aa_prices.dart';
 import 'package:eve_helper/data_structures/esi/market/market_stats.dart';
 import 'package:eve_helper/helpers.dart';
-import 'package:eve_helper/helpers/esi/industry.dart';
-import 'package:eve_helper/helpers/esi/market.dart';
-import 'package:eve_helper/helpers/esi/search.dart';
+import 'package:eve_helper/helpers/esi/industry_api.dart';
+import 'package:eve_helper/helpers/esi/market_api.dart';
+import 'package:eve_helper/helpers/esi/search_api.dart';
 import 'package:eve_helper/helpers/local/cache.dart';
 import 'package:eve_helper/widgets/card_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ManufacturingToolView extends StatefulWidget {
   ManufacturingToolView({Key key}) : super(key: key);
@@ -63,11 +64,11 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
     _brokerFeeVN = ValueNotifier<int>(5);
     _salesTaxVN = ValueNotifier<int>(5);
 
-    _aaPrices = Market.getAAPrices();
-    _costIndices = Industry.getSolarSystemCostIndices();
+    _aaPrices = context.read<MarketApi>().getAAPrices();
+    _costIndices = context.read<IndustryApi>().getSolarSystemCostIndices();
 
-    _marketSystemId = Search.getSolarSystemId('Jita', strict: true);
-    _industrySystemId = Search.getSolarSystemId('Jita', strict: true);
+    _marketSystemId = context.read<SearchApi>().getSolarSystemId('Jita', strict: true);
+    _industrySystemId = context.read<SearchApi>().getSolarSystemId('Jita', strict: true);
   }
 
   @override
@@ -113,7 +114,7 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
                 TextFormField(
                   controller: _industryTEC,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Submit'),
                   onPressed: _submit,
                 ),
@@ -753,7 +754,7 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
   void _submit() async {
     _dirtyVN.value = true;
 
-    final id = await Search.getInventoryTypeId(_blueprintTEC.text, strict: true);
+    final id = await context.read<SearchApi>().getInventoryTypeId(_blueprintTEC.text, strict: true);
     _blueprintInformationVN.value = await Helpers.getBlueprintInformation(id);
 
     List<int> ids = [];
@@ -761,14 +762,14 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
       ids.add(material.typeId);
     });
 
-    _marketSystemId = Cache.getSolarSystemId(_marketTEC.text);
-    _industrySystemId = Cache.getSolarSystemId(_industryTEC.text);
+    _marketSystemId = context.read<Cache>().getSolarSystemId(_marketTEC.text);
+    _industrySystemId = context.read<Cache>().getSolarSystemId(_industryTEC.text);
 
     _prices = List.filled(ids.length, null);
     for (int i = 0; i < ids.length; i++) {
-      _prices[i] = Cache.getMarketStats(await _marketSystemId, ids[i]);
+      _prices[i] = context.read<Cache>().getMarketStats(await _marketSystemId, ids[i]);
     }
-    _productPrice = Cache.getMarketStats(await _marketSystemId, _blueprintInformationVN.value.details.productTypeId);
+    _productPrice = context.read<Cache>().getMarketStats(await _marketSystemId, _blueprintInformationVN.value.details.productTypeId);
 
     _dirtyVN.value = false;
   }
@@ -860,12 +861,12 @@ class _ManufacturingToolViewState extends State<ManufacturingToolView> {
 
   Future<double> _getSalesTaxIncrease() async {
     final price = await _productPrice;
-    return price.minSell * _salesTaxVN.value * 0.01 * _runsVN.value;
+    return price.minSell * _blueprintInformationVN.value.details.productQuantity * _salesTaxVN.value * 0.01 * _runsVN.value;
   }
 
   Future<double> _getSalesTaxIncreasePerRun() async {
     final price = await _productPrice;
-    return price.minSell * _salesTaxVN.value * 0.01;
+    return price.minSell * _blueprintInformationVN.value.details.productQuantity * _salesTaxVN.value * 0.01;
   }
   
   Future<double> _getProfitPerRun() async {

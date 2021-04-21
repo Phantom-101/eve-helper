@@ -1,12 +1,13 @@
 import 'package:eve_helper/data_structures/local/pi_schematic.dart';
-import 'package:eve_helper/helpers/esi/search.dart';
-import 'package:eve_helper/helpers/esi/universe.dart';
+import 'package:eve_helper/helpers/esi/search_api.dart';
 import 'package:eve_helper/helpers/evemarketer/evemarketer.dart';
+import 'package:eve_helper/helpers/local/cache.dart';
 import 'package:eve_helper/helpers/local/local.dart';
 import 'package:eve_helper/widgets/card_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class PIToolView extends StatefulWidget {
   PIToolView({Key key}) : super(key: key);
@@ -38,7 +39,7 @@ class _PIToolViewState extends State<PIToolView> {
 
     _dirtyVN = ValueNotifier<bool> (false);
 
-    _marketId = Search.getSolarSystemId('Jita');
+    _marketId = context.read<SearchApi>().getSolarSystemId('Jita');
   }
 
   @override
@@ -131,7 +132,7 @@ class _PIToolViewState extends State<PIToolView> {
                 ),
                 DataCell(
                   FutureBuilder(
-                    future: Universe.getName(id),
+                    future: context.read<Cache>().getItemName(id),
                     builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                       if (snapshot.hasData) {
                         return Text(snapshot.data);

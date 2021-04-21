@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class Helpers {
   static Future<AlphaTrainableSkillList> getAlphaTrainableSkills() async {
-    final response = await http.get('https://sde.hoboleaks.space/tq/clonestates.json');
+    final response = await http.get(Uri.parse('https://sde.hoboleaks.space/tq/clonestates.json'));
 
     if (response.statusCode == 200) {
       return AlphaTrainableSkillList.fromJson(json.decode(response.body));
@@ -14,7 +14,7 @@ class Helpers {
   }
 
   static Future<BlueprintInformation> getBlueprintInformation(int id) async {
-    final response = await http.get('https://www.fuzzwork.co.uk/blueprint/api/blueprint.php?typeid=$id');
+    final response = await http.get(Uri.parse('https://www.fuzzwork.co.uk/blueprint/api/blueprint.php?typeid=$id'));
 
     if (response.statusCode == 200) {
       return BlueprintInformation.fromJson(json.decode(response.body));
@@ -27,7 +27,7 @@ class Helpers {
   static Future<int> getItemId(String name) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final msg = jsonEncode([name]);
-    final response = await http.post('https://esi.evetech.net/latest/universe/ids/?datasource=tranquility&language=en-us', headers: headers, body: msg);
+    final response = await http.post(Uri.parse('https://esi.evetech.net/latest/universe/ids/?datasource=tranquility&language=en-us'), headers: headers, body: msg);
 
     if (response.statusCode == 200) {
       return int.parse(response.body);

@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:eve_helper/data_structures/esi/market/market_order.dart';
-import 'package:eve_helper/helpers/esi/universe.dart';
+import 'package:eve_helper/helpers/local/cache.dart';
 import 'package:eve_helper/widgets/card_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class JsonToOrdersToolView extends StatefulWidget {
   JsonToOrdersToolView({Key key}) : super(key: key);
@@ -64,7 +65,7 @@ class _JsonToOrdersToolViewState extends State<JsonToOrdersToolView> {
                   controller: _jsonTEC,
                 ),
                 SizedBox(height: 8),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Submit'),
                   onPressed: _submit,
                 ),
@@ -98,7 +99,7 @@ class _JsonToOrdersToolViewState extends State<JsonToOrdersToolView> {
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Previous Page'),
                   onPressed: () async {
                     _pageVN.value = max(_pageVN.value - 1, 0);
@@ -110,7 +111,7 @@ class _JsonToOrdersToolViewState extends State<JsonToOrdersToolView> {
                     return Text('Current Page: ${_pageVN.value + 1}');
                   },
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Next Page'),
                   onPressed: () async {
                     _pageVN.value = min(_pageVN.value + 1, (_marketOrdersVN.value.length / 10.0).ceil() - 1);
@@ -143,7 +144,7 @@ class _JsonToOrdersToolViewState extends State<JsonToOrdersToolView> {
         CardTile(
           title: FutureBuilder(
             key: UniqueKey(),
-            future: Universe.getName(order.typeId),
+            future: context.read<Cache>().getItemName(order.typeId),
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               if (snapshot.hasData) {
                 return Text('${snapshot.data}');

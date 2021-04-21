@@ -1,12 +1,13 @@
 import 'package:eve_helper/data_structures.dart';
 import 'package:eve_helper/data_structures/gradient_sampler.dart';
-import 'package:eve_helper/helpers/esi/routes.dart';
-import 'package:eve_helper/helpers/esi/search.dart';
-import 'package:eve_helper/helpers/esi/universe.dart';
+import 'package:eve_helper/helpers/esi/routes_api.dart';
+import 'package:eve_helper/helpers/esi/search_api.dart';
 import 'package:eve_helper/helpers/kybernaut/kybernaut.dart';
+import 'package:eve_helper/helpers/local/cache.dart';
 import 'package:eve_helper/widgets/card_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RouteToolView extends StatefulWidget {
   RouteToolView({Key key}) : super(key: key);
@@ -107,7 +108,7 @@ class _RouteToolViewState extends State<RouteToolView> {
                       },
                     ),
                     SizedBox(height: 8),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('Submit'),
                       onPressed: () {
                         _submitVN.value = !_submitVN.value;
@@ -154,12 +155,12 @@ class _RouteToolViewState extends State<RouteToolView> {
     if (_invadedSolarSystemInformation == null)
       _invadedSolarSystemInformation = await Kybernaut.getInvadedSolarSystemInformation();
 
-    final origin = await Search.getSolarSystemId(_originTEC.text);
-    final destination = await Search.getSolarSystemId(_destinationTEC.text);
+    final origin = await context.read<SearchApi>().getSolarSystemId(_originTEC.text);
+    final destination = await context.read<SearchApi>().getSolarSystemId(_destinationTEC.text);
     if (origin == -1 || destination == -1)
       return CardTile(title: Text('Error'), subtitle: Text('Invalid System Name(s)'));
 
-    List<int> route = await Routes.getRouteWithFlag(origin, destination, _flagVN.value);
+    List<int> route = await context.read<RoutesApi>().getRouteWithFlag(origin, destination, _flagVN.value);
     if (route.length == 0)
       return CardTile(title: Text('Error'), subtitle: Text('No Route Found'));
 
@@ -167,7 +168,7 @@ class _RouteToolViewState extends State<RouteToolView> {
     for(int solarSystem in route)
       squares.add(
         FutureBuilder(
-          future: Universe.getSolarSystemInformation(solarSystem),
+          future: context.read<Cache>().getSolarSystemInformation(solarSystem),
           builder: (BuildContext context, AsyncSnapshot<SolarSystemInformation> snapshot) {
             if (snapshot.hasData) {
               final actualSecurityStatus = _getActualSecurityStatus(snapshot.data.systemId, snapshot.data.securityStatus);
@@ -226,7 +227,7 @@ class _RouteToolViewState extends State<RouteToolView> {
                             ],
                           ),
                           actions: [
-                            FlatButton(
+                            TextButton(
                               child: Text('Okay'),
                               onPressed: () {
                                 Navigator.pop(context);
@@ -263,14 +264,14 @@ class _RouteToolViewState extends State<RouteToolView> {
       title: Row(
         children: [
           FutureBuilder(
-            future: Universe.getSolarSystemInformation(route[0]),
+            future: context.read<Cache>().getSolarSystemInformation(route[0]),
             builder: (BuildContext context, AsyncSnapshot<SolarSystemInformation> snapshot) {
               if (snapshot.hasData) return Text(snapshot.data.name);
               return Text('Loading');},
           ),
           Text(' > '),
           FutureBuilder(
-            future: Universe.getSolarSystemInformation(route[route.length - 1]),
+            future: context.read<Cache>().getSolarSystemInformation(route[route.length - 1]),
             builder: (BuildContext context, AsyncSnapshot<SolarSystemInformation> snapshot) {
               if (snapshot.hasData) return Text(snapshot.data.name);
               return Text('Loading');},
